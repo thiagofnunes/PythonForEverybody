@@ -1,0 +1,25 @@
+import urllib.request, urllib.parse, urllib.error
+import xml.etree.ElementTree as ET
+import ssl
+
+# Ignore SSL certificate errors
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
+
+url = input('Enter URL - ')
+uh = urllib.request.urlopen(url, context=ctx)
+data = uh.read()
+
+#print('Retrieved', len(data), 'characters')
+#print(data)
+counter=0
+valTotal=0
+tree = ET.fromstring(data)
+stuff = tree.findall('comments/comment')
+for item in stuff:
+  #print(item.find('name').text)
+  counter=counter+1
+  valTotal=valTotal+int(item.find('count').text)
+print('Counter',counter)
+print('Total',valTotal)
